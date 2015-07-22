@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">OnOff Tracker</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="main_screen_on">Screen was turned on %1$d times.</string>
+    <string name="main_screen_off">Screen was turned off %1$d times.</string>
+    <string name="main_unlocked">Device was unlocked %1$d times.</string>
 </resources>
