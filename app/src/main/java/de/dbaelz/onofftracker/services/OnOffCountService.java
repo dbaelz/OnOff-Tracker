@@ -10,7 +10,7 @@ import android.os.IBinder;
 import de.dbaelz.onofftracker.OnOffTrackerApplication;
 import de.dbaelz.onofftracker.models.Action;
 
-public class UnlockService extends Service {
+public class OnOffCountService extends Service {
     private final String ACTION_SCREEN_ON = "android.intent.action.SCREEN_ON";
     private final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
     private final String ACTION_USER_PRESENT = "android.intent.action.USER_PRESENT";

@@ -7,7 +7,7 @@ import android.content.Intent;
 public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent serviceIntent = new Intent(context, UnlockService.class);
+        Intent serviceIntent = new Intent(context, OnOffCountService.class);
         context.startService(serviceIntent);
     }
 }

@@ -10,7 +10,7 @@ import de.dbaelz.onofftracker.OnOffTrackerApplication;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.Action;
-import de.dbaelz.onofftracker.services.UnlockService;
+import de.dbaelz.onofftracker.services.OnOffCountService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent serviceIntent = new Intent(this, UnlockService.class);
+        Intent serviceIntent = new Intent(this, OnOffCountService.class);
         startService(serviceIntent);
 
         cardViewToday = (CardView) findViewById(R.id.cardviewToday);

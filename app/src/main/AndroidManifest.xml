@@ -25,7 +25,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name=".services.UnlockService"/>
+        <service android:name=".services.OnOffCountService"/>
     </application>
 
 </manifest>
