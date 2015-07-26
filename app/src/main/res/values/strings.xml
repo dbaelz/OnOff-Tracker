@@ -3,7 +3,12 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="main_screen_on">Screen was turned on %1$d times.</string>
-    <string name="main_screen_off">Screen was turned off %1$d times.</string>
-    <string name="main_unlocked">Device was unlocked %1$d times.</string>
+    <string name="cardview_image_description">Icon of the task</string>
+    <string name="cardview_action_title_today">Today</string>
+    <string name="cardview_action_title_overall">Overall</string>
+
+    <string name="cardview_screenon">Screen turned on: %1$d times</string>
+    <string name="cardview_screenoff">Screen turned off: %1$d times</string>
+    <string name="cardview_unlocked">Device unlocked: %1$d times</string>
+
 </resources>

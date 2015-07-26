@@ -9,22 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/main_screen_on"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="28sp" />
+    <include
+        android:id="@+id/cardviewToday"
+        layout="@layout/cardview_action" />
 
-    <TextView
-        android:id="@+id/main_screen_off"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="28sp" />
-
-    <TextView
-        android:id="@+id/main_unlocked"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="28sp" />
-
+    <include
+        android:id="@+id/cardviewOverall"
+        layout="@layout/cardview_action" />
 </LinearLayout>

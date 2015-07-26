@@ -3,8 +3,7 @@ package de.dbaelz.onofftracker.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.CardView;
 import android.widget.TextView;
 
 import de.dbaelz.onofftracker.OnOffTrackerApplication;
@@ -15,9 +14,8 @@ import de.dbaelz.onofftracker.services.UnlockService;
 
 
 public class MainActivity extends AppCompatActivity {
-    private TextView screenOnTextView;
-    private TextView screenOffTextView;
-    private TextView unlockedTextView;
+    private CardView cardViewToday;
+    private CardView cardViewOverall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,44 +25,37 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, UnlockService.class);
         startService(serviceIntent);
 
-        screenOnTextView = (TextView) findViewById(R.id.main_screen_on);
-        screenOffTextView = (TextView) findViewById(R.id.main_screen_off);
-        unlockedTextView = (TextView) findViewById(R.id.main_unlocked);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        cardViewToday = (CardView) findViewById(R.id.cardviewToday);
+        cardViewOverall = (CardView) findViewById(R.id.cardviewOverall);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshText();
+        refreshCardviews();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    private void refreshCardviews() {
+        ((TextView) cardViewToday.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_today));
+        ((TextView) cardViewOverall.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_overall));
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void refreshText() {
         OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
         ActionHelper actionHelper = app.getActionHelper();
-        long screenOnCount = actionHelper.countActions(Action.ActionType.SCREEN_ON);
-        long screenOffCount = actionHelper.countActions(Action.ActionType.SCREEN_OFF);
-        long unlockedCount = actionHelper.countActions(Action.ActionType.UNLOCKED);
 
-        screenOnTextView.setText(String.format(getString(R.string.main_screen_on), screenOnCount));
-        screenOffTextView.setText(String.format(getString(R.string.main_screen_off), screenOffCount));
-        unlockedTextView.setText(String.format(getString(R.string.main_unlocked), unlockedCount));
+        long screenOnToday = actionHelper.countTodaysActions(Action.ActionType.SCREENON);
+        long screenOffToday = actionHelper.countTodaysActions(Action.ActionType.SCREENOFF);
+        long unlockedToday = actionHelper.countTodaysActions(Action.ActionType.UNLOCKED);
+
+        ((TextView) cardViewToday.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnToday));
+        ((TextView) cardViewToday.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffToday));
+        ((TextView) cardViewToday.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedToday));
+
+        long screenOnOverall = actionHelper.countAllActions(Action.ActionType.SCREENON);
+        long screenOffOverall = actionHelper.countAllActions(Action.ActionType.SCREENOFF);
+        long unlockedOverall = actionHelper.countAllActions(Action.ActionType.UNLOCKED);
+
+        ((TextView) cardViewOverall.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnOverall));
+        ((TextView) cardViewOverall.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffOverall));
+        ((TextView) cardViewOverall.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedOverall));
     }
 }

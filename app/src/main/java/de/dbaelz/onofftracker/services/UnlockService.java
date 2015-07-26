@@ -15,22 +15,24 @@ public class UnlockService extends Service {
     private final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
     private final String ACTION_USER_PRESENT = "android.intent.action.USER_PRESENT";
 
+    private BroadcastReceiver receiver;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+    public void onCreate() {
+        receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
                 Action.ActionType type;
                 if (intent.getAction().equals(ACTION_SCREEN_ON)) {
-                    type = Action.ActionType.SCREEN_ON;
+                    type = Action.ActionType.SCREENON;
                 } else if (intent.getAction().equals(ACTION_SCREEN_OFF)) {
-                    type = Action.ActionType.SCREEN_OFF;
+                    type = Action.ActionType.SCREENOFF;
                 } else {
                     type = Action.ActionType.UNLOCKED;
                 }
@@ -45,6 +47,6 @@ public class UnlockService extends Service {
         registerReceiver(receiver, filterScreenOff);
         registerReceiver(receiver, filterUserPresent);
 
-        return super.onStartCommand(intent, flags, startId);
+        super.onCreate();
     }
 }
