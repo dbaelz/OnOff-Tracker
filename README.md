@@ -9,8 +9,8 @@ Features:
 Please note: After installation the application must be started once to activate the background service without a device restart.
 
 Build
--------------
-The projects can be build with the integrated Gradle wrapper.
+----------------------
+The projects can be build with the integrated Gradle wrapper. It's also available in the [Play Store](https://play.google.com/store/apps/details?id=de.dbaelz.onofftracker).
 
 Signing
 -------------
