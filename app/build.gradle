@@ -27,3 +27,9 @@ dependencies {
 
     compile 'com.j256.ormlite:ormlite-android:4.48'
 }
+
+// Signing the APK with the OnOff-Tracker.signing property and external config files
+if (project.hasProperty("OnOff-Tracker.signing")
+        && new File(project.property("OnOff-Tracker.signing") + "/OnOff-Tracker.signing.gradle").exists()) {
+    apply from: project.property("OnOff-Tracker.signing") + "/OnOff-Tracker.signing";
+}
