@@ -59,18 +59,26 @@ public class ActionHelper {
         }
     }
 
-    public long countTodaysActions(Action.ActionType type) {
-        DateTime current = DateTime.now();
-        DateTime startOfDay = new DateTime().withTimeAtStartOfDay();
+    public long countActionsBetween(DateTime startDate, DateTime endDate, Action.ActionType type) {
         try {
             return actionDao.queryBuilder().where()
                     .eq(TABLE_ACTIONTYPE, type)
                     .and()
-                    .between(TABLE_DATE, startOfDay.toDate(), current.toDate())
+                    .between(TABLE_DATE, startDate.withTimeAtStartOfDay().toDate(), endDate.toDate())
                     .countOf();
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public long countActionsLastSevenDays(Action.ActionType type) {
+        DateTime today = DateTime.now();
+        return countActionsBetween(today.minusDays(7), today, type);
+    }
+
+    public long countActionsToday(Action.ActionType type) {
+        DateTime today = DateTime.now();
+        return countActionsBetween(today, today, type);
     }
 }

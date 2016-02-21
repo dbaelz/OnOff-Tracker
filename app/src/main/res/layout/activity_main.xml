@@ -19,6 +19,10 @@
             layout="@layout/cardview_action" />
 
         <include
+            android:id="@+id/cardviewLastSevenDays"
+            layout="@layout/cardview_action" />
+
+        <include
             android:id="@+id/cardviewOverall"
             layout="@layout/cardview_action" />
     </LinearLayout>

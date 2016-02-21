@@ -31,6 +31,7 @@ import de.dbaelz.onofftracker.services.OnOffCountService;
 
 public class MainActivity extends AppCompatActivity {
     private CardView cardViewToday;
+    private CardView cardViewLastSevenDays;
     private CardView cardViewOverall;
 
     @Override
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         startService(serviceIntent);
 
         cardViewToday = (CardView) findViewById(R.id.cardviewToday);
+        cardViewLastSevenDays = (CardView) findViewById(R.id.cardviewLastSevenDays);
         cardViewOverall = (CardView) findViewById(R.id.cardviewOverall);
     }
 
@@ -53,23 +55,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshCardviews() {
         ((TextView) cardViewToday.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_today));
+        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_lastSevenDays));
         ((TextView) cardViewOverall.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_overall));
 
         OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
         ActionHelper actionHelper = app.getActionHelper();
 
-        long screenOnToday = actionHelper.countTodaysActions(Action.ActionType.SCREENON);
-        long screenOffToday = actionHelper.countTodaysActions(Action.ActionType.SCREENOFF);
-        long unlockedToday = actionHelper.countTodaysActions(Action.ActionType.UNLOCKED);
-
+        // Today
+        long screenOnToday = actionHelper.countActionsToday(Action.ActionType.SCREENON);
+        long screenOffToday = actionHelper.countActionsToday(Action.ActionType.SCREENOFF);
+        long unlockedToday = actionHelper.countActionsToday(Action.ActionType.UNLOCKED);
         ((TextView) cardViewToday.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnToday));
         ((TextView) cardViewToday.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffToday));
         ((TextView) cardViewToday.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedToday));
 
+        // Last 7 days
+        long screenOnLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENON);
+        long screenOffLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENOFF);
+        long unlockedLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.UNLOCKED);
+        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnLastSevenDays));
+        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffLastSevenDays));
+        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedLastSevenDays));
+
+        // Overall
         long screenOnOverall = actionHelper.countAllActions(Action.ActionType.SCREENON);
         long screenOffOverall = actionHelper.countAllActions(Action.ActionType.SCREENOFF);
         long unlockedOverall = actionHelper.countAllActions(Action.ActionType.UNLOCKED);
-
         ((TextView) cardViewOverall.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnOverall));
         ((TextView) cardViewOverall.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffOverall));
         ((TextView) cardViewOverall.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedOverall));
