@@ -27,10 +27,10 @@ import java.util.List;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.models.CardItem;
 
-class OnOffAdapter extends RecyclerView.Adapter<OnOffAdapter.ViewHolder> {
+class CardItemsAdapter extends RecyclerView.Adapter<CardItemsAdapter.ViewHolder> {
     private List<CardItem> items;
 
-    public OnOffAdapter(List<CardItem> items) {
+    public CardItemsAdapter(List<CardItem> items) {
         this.items = items;
     }
 

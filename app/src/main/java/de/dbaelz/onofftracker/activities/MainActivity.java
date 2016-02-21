@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        recyclerView.setAdapter(new OnOffAdapter(getCardItems()));
+        recyclerView.setAdapter(new CardItemsAdapter(getCardItems()));
     }
 
     private List<CardItem> getCardItems() {
