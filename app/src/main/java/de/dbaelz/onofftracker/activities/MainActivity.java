@@ -19,20 +19,22 @@ package de.dbaelz.onofftracker.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.widget.TextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dbaelz.onofftracker.OnOffTrackerApplication;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.Action;
+import de.dbaelz.onofftracker.models.CardItem;
 import de.dbaelz.onofftracker.services.OnOffCountService;
 
 
 public class MainActivity extends AppCompatActivity {
-    private CardView cardViewToday;
-    private CardView cardViewLastSevenDays;
-    private CardView cardViewOverall;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,47 +44,37 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, OnOffCountService.class);
         startService(serviceIntent);
 
-        cardViewToday = (CardView) findViewById(R.id.cardviewToday);
-        cardViewLastSevenDays = (CardView) findViewById(R.id.cardviewLastSevenDays);
-        cardViewOverall = (CardView) findViewById(R.id.cardviewOverall);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new OnOffAdapter(getCardItems()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshCardviews();
+        recyclerView.setAdapter(new OnOffAdapter(getCardItems()));
     }
 
-    private void refreshCardviews() {
-        ((TextView) cardViewToday.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_today));
-        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_lastSevenDays));
-        ((TextView) cardViewOverall.findViewById(R.id.cardview_title)).setText(getString(R.string.cardview_action_title_overall));
-
+    private List<CardItem> getCardItems() {
         OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
         ActionHelper actionHelper = app.getActionHelper();
 
+        ArrayList<CardItem> items = new ArrayList<>(3);
         // Today
-        long screenOnToday = actionHelper.countActionsToday(Action.ActionType.SCREENON);
-        long screenOffToday = actionHelper.countActionsToday(Action.ActionType.SCREENOFF);
-        long unlockedToday = actionHelper.countActionsToday(Action.ActionType.UNLOCKED);
-        ((TextView) cardViewToday.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnToday));
-        ((TextView) cardViewToday.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffToday));
-        ((TextView) cardViewToday.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedToday));
-
+        items.add(new CardItem(getString(R.string.cardview_action_title_today),
+                actionHelper.countActionsToday(Action.ActionType.SCREENON),
+                actionHelper.countActionsToday(Action.ActionType.SCREENOFF),
+                actionHelper.countActionsToday(Action.ActionType.UNLOCKED)));
         // Last 7 days
-        long screenOnLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENON);
-        long screenOffLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENOFF);
-        long unlockedLastSevenDays = actionHelper.countActionsLastSevenDays(Action.ActionType.UNLOCKED);
-        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnLastSevenDays));
-        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffLastSevenDays));
-        ((TextView) cardViewLastSevenDays.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedLastSevenDays));
-
+        items.add(new CardItem(getString(R.string.cardview_action_title_lastSevenDays),
+                actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENON),
+                actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENOFF),
+                actionHelper.countActionsLastSevenDays(Action.ActionType.UNLOCKED)));
         // Overall
-        long screenOnOverall = actionHelper.countAllActions(Action.ActionType.SCREENON);
-        long screenOffOverall = actionHelper.countAllActions(Action.ActionType.SCREENOFF);
-        long unlockedOverall = actionHelper.countAllActions(Action.ActionType.UNLOCKED);
-        ((TextView) cardViewOverall.findViewById(R.id.cardview_screenon)).setText(String.format(getString(R.string.cardview_screenon), screenOnOverall));
-        ((TextView) cardViewOverall.findViewById(R.id.cardview_screenoff)).setText(String.format(getString(R.string.cardview_screenoff), screenOffOverall));
-        ((TextView) cardViewOverall.findViewById(R.id.cardview_unlocked)).setText(String.format(getString(R.string.cardview_unlocked), unlockedOverall));
+        items.add(new CardItem(getString(R.string.cardview_action_title_overall),
+                actionHelper.countAllActions(Action.ActionType.SCREENON),
+                actionHelper.countAllActions(Action.ActionType.SCREENOFF),
+                actionHelper.countAllActions(Action.ActionType.UNLOCKED)));
+        return items;
     }
 }
