@@ -64,7 +64,7 @@ public class ActionHelper {
             return actionDao.queryBuilder().where()
                     .eq(TABLE_ACTIONTYPE, type)
                     .and()
-                    .between(TABLE_DATE, startDate.withTimeAtStartOfDay().toDate(), endDate.toDate())
+                    .between(TABLE_DATE, startDate.toDate(), endDate.toDate())
                     .countOf();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,11 +74,11 @@ public class ActionHelper {
 
     public long countActionsLastSevenDays(Action.ActionType type) {
         DateTime today = DateTime.now();
-        return countActionsBetween(today.minusDays(7), today, type);
+        return countActionsBetween(today.minusDays(6).withTimeAtStartOfDay(), today, type);
     }
 
     public long countActionsToday(Action.ActionType type) {
         DateTime today = DateTime.now();
-        return countActionsBetween(today, today, type);
+        return countActionsBetween(today.withTimeAtStartOfDay(), today, type);
     }
 }
