@@ -6,6 +6,7 @@
     <string name="cardview_action_title_lastSevenDays">Last 7 days</string>
     <string name="cardview_action_title_overall">Overall</string>
 
+    <string name="cardview_title">%1$s (%2$s - %3$s)</string>
     <string name="cardview_screenon">Turned on: %1$d times</string>
     <string name="cardview_screenoff">Turned off: %1$d times</string>
     <string name="cardview_unlocked">Unlocked: %1$d times</string>

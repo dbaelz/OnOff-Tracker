@@ -26,6 +26,10 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "actions")
 public class Action {
+    public enum ActionType {
+        SCREENON, SCREENOFF, UNLOCKED
+    }
+
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -43,7 +47,11 @@ public class Action {
         this.date = DateTime.now().toDate();
     }
 
-    public enum ActionType {
-        SCREENON, SCREENOFF, UNLOCKED
+    public Date getDate() {
+        return date;
+    }
+
+    public ActionType getType() {
+        return type;
     }
 }

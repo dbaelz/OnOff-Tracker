@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.dbaelz.onofftracker.activities;
+package de.dbaelz.onofftracker.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +28,7 @@ import java.util.List;
 import de.dbaelz.onofftracker.OnOffTrackerApplication;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
-import de.dbaelz.onofftracker.models.Action;
-import de.dbaelz.onofftracker.models.CardItem;
+import de.dbaelz.onofftracker.models.ActionsInterval;
 import de.dbaelz.onofftracker.services.OnOffCountService;
 
 
@@ -51,29 +50,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        recyclerView.setAdapter(new CardItemsAdapter(getCardItems()));
+        recyclerView.setAdapter(new CardItemAdapter(getCardItems(), this));
     }
 
-    private List<CardItem> getCardItems() {
+    private List<ActionsInterval> getCardItems() {
         OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
         ActionHelper actionHelper = app.getActionHelper();
 
-        ArrayList<CardItem> items = new ArrayList<>(3);
-        // Today
-        items.add(new CardItem(getString(R.string.cardview_action_title_today),
-                actionHelper.countActionsToday(Action.ActionType.SCREENON),
-                actionHelper.countActionsToday(Action.ActionType.SCREENOFF),
-                actionHelper.countActionsToday(Action.ActionType.UNLOCKED)));
-        // Last 7 days
-        items.add(new CardItem(getString(R.string.cardview_action_title_lastSevenDays),
-                actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENON),
-                actionHelper.countActionsLastSevenDays(Action.ActionType.SCREENOFF),
-                actionHelper.countActionsLastSevenDays(Action.ActionType.UNLOCKED)));
-        // Overall
-        items.add(new CardItem(getString(R.string.cardview_action_title_overall),
-                actionHelper.countAllActions(Action.ActionType.SCREENON),
-                actionHelper.countAllActions(Action.ActionType.SCREENOFF),
-                actionHelper.countAllActions(Action.ActionType.UNLOCKED)));
+        ArrayList<ActionsInterval> items = new ArrayList<>(3);
+        items.add(actionHelper.getActionsIntervalToday(getString(R.string.cardview_action_title_today)));
+        items.add(actionHelper.getActionsIntervalLastSevenDays(getString(R.string.cardview_action_title_lastSevenDays)));
+        items.add(actionHelper.getActionsIntervalOverall(getString(R.string.cardview_action_title_overall)));
         return items;
     }
 }

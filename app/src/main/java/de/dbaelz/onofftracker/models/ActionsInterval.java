@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Daniel Bälz
+ * Copyright 2016 Daniel Bälz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,21 @@
 
 package de.dbaelz.onofftracker.models;
 
-public class CardItem {
+import org.joda.time.DateTime;
+
+public class ActionsInterval {
     public String title;
+    public DateTime startDate;
+    public DateTime endDate;
     public long screenOn;
     public long screenOff;
     public long unlocked;
 
-    public CardItem(String title, long screenOn, long screenOff, long unlocked) {
+
+    public ActionsInterval(String title, DateTime startDate, DateTime endDate, long screenOn, long screenOff, long unlocked) {
         this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.screenOn = screenOn;
         this.screenOff = screenOff;
         this.unlocked = unlocked;
