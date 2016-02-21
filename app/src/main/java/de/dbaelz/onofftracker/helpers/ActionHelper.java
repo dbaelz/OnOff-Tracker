@@ -90,36 +90,35 @@ public class ActionHelper {
         }
     }
 
-    public long countActionsLastSevenDays(Action.ActionType type) {
-        DateTime today = DateTime.now();
-        return countActionsBetween(today.minusDays(6).withTimeAtStartOfDay(), today, type);
-    }
-
-    public long countActionsToday(Action.ActionType type) {
-        DateTime today = DateTime.now();
-        return countActionsBetween(today.withTimeAtStartOfDay(), today, type);
+    public long countActionsForDate(DateTime date, Action.ActionType type) {
+        return countActionsBetween(
+                date.withTimeAtStartOfDay(),
+                date.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59),
+                type);
     }
 
     public ActionsInterval getActionsIntervalToday(String title) {
-        DateTime today = DateTime.now();
+        DateTime endDate = DateTime.now();
+        DateTime startDate = endDate.withTimeAtStartOfDay();
         return new ActionsInterval(
                 title,
-                today.withTimeAtStartOfDay(),
-                today,
-                countActionsToday(Action.ActionType.SCREENON),
-                countActionsToday(Action.ActionType.SCREENOFF),
-                countActionsToday(Action.ActionType.UNLOCKED));
+                startDate,
+                endDate,
+                countActionsBetween(startDate, endDate, Action.ActionType.SCREENON),
+                countActionsBetween(startDate, endDate, Action.ActionType.SCREENOFF),
+                countActionsBetween(startDate, endDate, Action.ActionType.UNLOCKED));
     }
 
     public ActionsInterval getActionsIntervalLastSevenDays(String title) {
-        DateTime today = DateTime.now();
+        DateTime endDate = DateTime.now();
+        DateTime startDate = endDate.minusDays(6).withTimeAtStartOfDay();
         return new ActionsInterval(
                 title,
-                today.minusDays(6).withTimeAtStartOfDay(),
-                today,
-                countActionsLastSevenDays(Action.ActionType.SCREENON),
-                countActionsLastSevenDays(Action.ActionType.SCREENOFF),
-                countActionsLastSevenDays(Action.ActionType.UNLOCKED));
+                startDate,
+                endDate,
+                countActionsBetween(startDate, endDate, Action.ActionType.SCREENON),
+                countActionsBetween(startDate, endDate, Action.ActionType.SCREENOFF),
+                countActionsBetween(startDate, endDate, Action.ActionType.UNLOCKED));
     }
 
     public ActionsInterval getActionsIntervalOverall(String title) {

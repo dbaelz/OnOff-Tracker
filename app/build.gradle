@@ -27,7 +27,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
 
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'net.danlew:android.joda:2.9.2';
+    compile 'net.danlew:android.joda:2.9.2'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
 }
 
 // Signing the APK with the OnOff-Tracker.signing property and external config files
