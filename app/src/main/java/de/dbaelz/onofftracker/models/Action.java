@@ -20,7 +20,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 @DatabaseTable(tableName = "actions")
@@ -39,7 +40,7 @@ public class Action {
 
     public Action(ActionType type) {
         this.type = type;
-        this.date = Calendar.getInstance().getTime();
+        this.date = DateTime.now().toDate();
     }
 
     public enum ActionType {

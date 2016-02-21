@@ -18,9 +18,9 @@ package de.dbaelz.onofftracker.helpers;
 
 import com.j256.ormlite.dao.Dao;
 
+import org.joda.time.DateTime;
+
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 
 import de.dbaelz.onofftracker.models.Action;
 
@@ -60,16 +60,13 @@ public class ActionHelper {
     }
 
     public long countTodaysActions(Action.ActionType type) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        DateTime current = DateTime.now();
+        DateTime startOfDay = new DateTime().withTimeAtStartOfDay();
         try {
             return actionDao.queryBuilder().where()
                     .eq(TABLE_ACTIONTYPE, type)
                     .and()
-                    .between(TABLE_DATE, calendar.getTime(), currentDate)
+                    .between(TABLE_DATE, startOfDay.toDate(), current.toDate())
                     .countOf();
         } catch (SQLException e) {
             e.printStackTrace();

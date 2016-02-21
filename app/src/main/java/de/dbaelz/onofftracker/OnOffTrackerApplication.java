@@ -20,6 +20,8 @@ import android.app.Application;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.helpers.DatabaseHelper;
 
@@ -30,6 +32,7 @@ public class OnOffTrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        JodaTimeAndroid.init(this);
 
         databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
         actionHelper = ActionHelper.getInstance(databaseHelper.getActionDao());
