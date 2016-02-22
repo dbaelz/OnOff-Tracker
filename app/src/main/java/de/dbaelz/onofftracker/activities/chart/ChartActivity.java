@@ -24,6 +24,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import org.joda.time.DateTime;
@@ -36,6 +37,10 @@ import de.dbaelz.onofftracker.OnOffTrackerApplication;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.Action;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ChartActivity extends AppCompatActivity {
     public static final String START_DATE = "start_date";
@@ -51,17 +56,46 @@ public class ChartActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if (getIntent() != null) {
-            DateTime startDate = (DateTime) getIntent().getSerializableExtra(START_DATE);
-            DateTime endDate = (DateTime) getIntent().getSerializableExtra(END_DATE);
+        final BarChart chart = (BarChart) findViewById(R.id.barChart);
+        chart.setDescription("");
 
-            BarChart chart = (BarChart) findViewById(R.id.barChart);
-            chart.setLogEnabled(true);
-            chart.setData(generateData(startDate, endDate));
+        if (getIntent() != null) {
+            final DateTime startDate = (DateTime) getIntent().getSerializableExtra(START_DATE);
+            final DateTime endDate = (DateTime) getIntent().getSerializableExtra(END_DATE);
+
+            chart.setNoDataText(getString(R.string.chart_loading_data));
+
+            Observable.create(new Observable.OnSubscribe<BarData>() {
+                @Override
+                public void call(Subscriber<? super BarData> subscriber) {
+                    subscriber.onNext(loadData(startDate, endDate));
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<BarData>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            chart.setNoDataText(getString(R.string.chart_error_loading));
+                        }
+
+                        @Override
+                        public void onNext(BarData barData) {
+                            chart.setData(barData);
+                            chart.invalidate();
+                            onCompleted();
+                        }
+                    });
+        } else {
+            chart.setNoDataText(getString(R.string.chart_no_data));
         }
     }
 
-    private BarData generateData(DateTime startDate, DateTime endDate) {
+    private BarData loadData(DateTime startDate, DateTime endDate) {
         OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
         ActionHelper actionHelper = app.getActionHelper();
 
@@ -74,7 +108,6 @@ public class ChartActivity extends AppCompatActivity {
         DateTime inter = startDate;
         int index = 0;
 
-        // TODO: Fetch data from database is slow: Improve performance of queries and/or add waitscreen while fetching
         while (inter.compareTo(endDate) < 0) {
             days.add(fmt.print(inter));
             entriesScreenOn.add(new BarEntry(actionHelper.countActionsForDate(inter, Action.ActionType.SCREENON), index));
@@ -88,12 +121,14 @@ public class ChartActivity extends AppCompatActivity {
         BarDataSet screenOn = new BarDataSet(entriesScreenOn, "On");
         screenOn.setColor(ContextCompat.getColor(this, R.color.primary));
         BarDataSet screenOff = new BarDataSet(entriesScreenOff, "Off");
-        screenOff.setColor(ContextCompat.getColor(this, R.color.accent));
+        screenOff.setColor(ContextCompat.getColor(this, R.color.primary_light));
         BarDataSet unlocked = new BarDataSet(entriesScreenUnlocked, "Unlocked");
         unlocked.setColor(ContextCompat.getColor(this, R.color.primary_text));
         sets.add(screenOn);
         sets.add(screenOff);
         sets.add(unlocked);
-        return new BarData(days, sets);
+        BarData barData = new BarData(days, sets);
+        barData.setValueFormatter(new LargeValueFormatter());
+        return barData;
     }
 }

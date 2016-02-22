@@ -11,4 +11,8 @@
     <string name="cardview_screenoff">Turned off: %1$d times</string>
     <string name="cardview_unlocked">Unlocked: %1$d times</string>
 
+    <!-- ChartActivity -->
+    <string name="chart_loading_data">Loading data…</string>
+    <string name="chart_no_data">No data available</string>
+    <string name="chart_error_loading">Error loading the data</string>
 </resources>

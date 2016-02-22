@@ -29,6 +29,10 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'net.danlew:android.joda:2.9.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
+
+    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+
 }
 
 // Signing the APK with the OnOff-Tracker.signing property and external config files
