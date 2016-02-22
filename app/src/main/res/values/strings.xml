@@ -15,4 +15,7 @@
     <string name="chart_loading_data">Loading data…</string>
     <string name="chart_no_data">No data available</string>
     <string name="chart_error_loading">Error loading the data</string>
+    <string name="chart_action_on">On</string>
+    <string name="chart_action_off">On</string>
+    <string name="chart_action_unlocked">Unlocked</string>
 </resources>

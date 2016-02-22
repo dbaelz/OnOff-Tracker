@@ -118,11 +118,11 @@ public class ChartActivity extends AppCompatActivity {
             index++;
         }
 
-        BarDataSet screenOn = new BarDataSet(entriesScreenOn, "On");
+        BarDataSet screenOn = new BarDataSet(entriesScreenOn, getString(R.string.chart_action_on));
         screenOn.setColor(ContextCompat.getColor(this, R.color.primary));
-        BarDataSet screenOff = new BarDataSet(entriesScreenOff, "Off");
+        BarDataSet screenOff = new BarDataSet(entriesScreenOff, getString(R.string.chart_action_off));
         screenOff.setColor(ContextCompat.getColor(this, R.color.primary_light));
-        BarDataSet unlocked = new BarDataSet(entriesScreenUnlocked, "Unlocked");
+        BarDataSet unlocked = new BarDataSet(entriesScreenUnlocked, getString(R.string.chart_action_unlocked));
         unlocked.setColor(ContextCompat.getColor(this, R.color.primary_text));
         sets.add(screenOn);
         sets.add(screenOff);
