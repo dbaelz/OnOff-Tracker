@@ -3,7 +3,8 @@ On-Off Tracker
 The On-Off Tracker is an application to measure how often the screen has been switched on and off. In addition, it also tracks how often the device is unlocked.
 
 Features:
-- Today and overall numbers for on-off switching of the screen and unlocking.
+- Today, last seven days and overall numbers for on-off switching of the screen and unlocking.
+- Charts to visualize the data.
 - Background service that runs automatically after the device is booted.
 
 Please note: After installation the application must be started once to activate the background service without a device restart.
