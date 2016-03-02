@@ -58,13 +58,13 @@ public class ActionHelper {
             PreparedQuery<Action> date = actionDao.queryBuilder().orderBy("date", true).limit(1l).prepare();
             List<Action> result = actionDao.query(date);
             if (result.size() == 1) {
-                return new DateTime(result.get(0).getDate());
+                return new DateTime(result.get(0).getDate()).withTimeAtStartOfDay();
             } else {
-                return DateTime.now();
+                return DateTime.now().withTimeAtStartOfDay();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return DateTime.now();
+            return DateTime.now().withTimeAtStartOfDay();
         }
     }
 
