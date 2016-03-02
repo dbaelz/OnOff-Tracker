@@ -63,8 +63,8 @@ class CardItemAdapter extends RecyclerView.Adapter<CardItemAdapter.ViewHolder> i
         }
         holder.title.setText(title);
         holder.screenOn.setText(String.format(holder.screenOn.getContext().getString(R.string.cardview_screenon), item.screenOn));
-        holder.screenOff.setText(String.format(holder.screenOff.getContext().getString(R.string.cardview_screenon), item.screenOff));
-        holder.unlocked.setText(String.format(holder.unlocked.getContext().getString(R.string.cardview_screenon), item.unlocked));
+        holder.screenOff.setText(String.format(holder.screenOff.getContext().getString(R.string.cardview_screenoff), item.screenOff));
+        holder.unlocked.setText(String.format(holder.unlocked.getContext().getString(R.string.cardview_unlocked), item.unlocked));
     }
 
     @Override
