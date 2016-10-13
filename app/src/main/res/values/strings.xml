@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">On-Off Tracker</string>
-
     <string name="cardview_image_description">Icon of the task</string>
     <string name="cardview_action_title_today">Today</string>
     <string name="cardview_action_title_lastSevenDays">Last 7 days</string>
