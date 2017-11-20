@@ -25,7 +25,9 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dbaelz.onofftracker.OnOffTrackerApplication;
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.ActionsInterval;
@@ -35,15 +37,19 @@ import de.dbaelz.onofftracker.services.OnOffCountService;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
+    @Inject
+    ActionHelper actionHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Intent serviceIntent = new Intent(this, OnOffCountService.class);
         startService(serviceIntent);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -54,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<ActionsInterval> getCardItems() {
-        OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
-        ActionHelper actionHelper = app.getActionHelper();
-
         ArrayList<ActionsInterval> items = new ArrayList<>(3);
         items.add(actionHelper.getActionsIntervalToday(getString(R.string.cardview_action_title_today)));
         items.add(actionHelper.getActionsIntervalLastSevenDays(getString(R.string.cardview_action_title_lastSevenDays)));
