@@ -33,7 +33,9 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
-import de.dbaelz.onofftracker.OnOffTrackerApplication;
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import de.dbaelz.onofftracker.R;
 import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.Action;
@@ -46,17 +48,21 @@ public class ChartActivity extends AppCompatActivity {
     public static final String START_DATE = "start_date";
     public static final String END_DATE = "end_date";
 
+    @Inject
+    ActionHelper actionHelper;
+
     private DateTimeFormatter fmt = DateTimeFormat.shortDate();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        final BarChart chart = (BarChart) findViewById(R.id.barChart);
+        final BarChart chart = findViewById(R.id.barChart);
         chart.setDescription("");
 
         if (getIntent() != null) {
@@ -96,9 +102,6 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private BarData loadData(DateTime startDate, DateTime endDate) {
-        OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
-        ActionHelper actionHelper = app.getActionHelper();
-
         ArrayList<IBarDataSet> sets = new ArrayList<>();
         ArrayList<String> days = new ArrayList<>();
         ArrayList<BarEntry> entriesScreenOn = new ArrayList<>();
