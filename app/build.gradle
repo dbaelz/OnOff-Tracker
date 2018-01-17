@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "de.dbaelz.onofftracker"
         minSdkVersion 14
-        targetSdkVersion 24
-        versionCode 4
+        targetSdkVersion 26
+        versionCode 5
         versionName "1.2.0"
     }
     buildTypes {
@@ -18,23 +18,33 @@ android {
         }
     }
 
+    flavorDimensions "environment"
+
     productFlavors {
         dev {
+            dimension "environment"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "On-Off Tracker dev"
         }
         prod {
+            dimension "environment"
             resValue "string", "app_name", "On-Off Tracker"
         }
     }
 }
 
 ext {
-    supportLibVersion = '24.2.1'
+    supportLibVersion = '26.1.0'
+    daggerVersion = 2.13
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:cardview-v7:${supportLibVersion}"
@@ -46,7 +56,6 @@ dependencies {
 
     compile "io.reactivex:rxjava:1.1.6"
     compile "io.reactivex:rxandroid:1.2.1"
-
 }
 
 // Signing the APK with the OnOff-Tracker.signing property and external config files

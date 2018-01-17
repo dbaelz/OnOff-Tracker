@@ -23,10 +23,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import de.dbaelz.onofftracker.OnOffTrackerApplication;
+import de.dbaelz.onofftracker.helpers.ActionHelper;
 import de.dbaelz.onofftracker.models.Action;
 
 public class OnOffCountService extends Service {
+
+    @Inject
+    ActionHelper actionHelper;
+
     private final String ACTION_SCREEN_ON = "android.intent.action.SCREEN_ON";
     private final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
     private final String ACTION_USER_PRESENT = "android.intent.action.USER_PRESENT";
@@ -40,10 +48,10 @@ public class OnOffCountService extends Service {
 
     @Override
     public void onCreate() {
+        AndroidInjection.inject(this);
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                OnOffTrackerApplication app = (OnOffTrackerApplication) getApplication();
                 Action.ActionType type;
                 if (intent.getAction().equals(ACTION_SCREEN_ON)) {
                     type = Action.ActionType.SCREENON;
@@ -52,7 +60,7 @@ public class OnOffCountService extends Service {
                 } else {
                     type = Action.ActionType.UNLOCKED;
                 }
-                app.getActionHelper().addAction(type);
+                actionHelper.addAction(type);
             }
         };
 
