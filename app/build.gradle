@@ -18,19 +18,23 @@ android {
         }
     }
 
+    flavorDimensions "environment"
+
     productFlavors {
         dev {
+            dimension "environment"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "On-Off Tracker dev"
         }
         prod {
+            dimension "environment"
             resValue "string", "app_name", "On-Off Tracker"
         }
     }
 }
 
 ext {
-    supportLibVersion = '26.1.0',
+    supportLibVersion = '26.1.0'
     daggerVersion = 2.13
 }
 
